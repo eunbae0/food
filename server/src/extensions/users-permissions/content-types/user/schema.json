@@ -77,10 +77,11 @@
     "nickname": {
       "type": "string"
     },
-    "uid": {
-      "type": "uid",
-      "required": true,
-      "targetField": "provider"
+    "posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::post.post",
+      "mappedBy": "user"
     }
   }
 }
