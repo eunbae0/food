@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import CardProps from './card.type';
+import { CardProps } from './card.type';
 import styles from './Card.module.css';
 
-export const Header = ({ card }: CardProps) => (
+export const Card = ({ card }: CardProps) => (
   <article className={styles.wrapper}>
     <header className={styles.header}>
       <div className={styles.headerLeft}>
@@ -30,4 +30,4 @@ export const Header = ({ card }: CardProps) => (
   </article>
 );
 
-export default Header;
+export default Card;
