@@ -1,33 +1,44 @@
 import axios, { AxiosError } from 'axios';
 
 import { API_URL } from '@/constants/urls';
+import { authAPI } from '..';
+
+const RETRY_INTERVAL_TIME = 3000;
 
 const API = axios.create({
   baseURL: API_URL,
+  // withCredentials: true,
 });
 
 API.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<{ code: string }>) => {
-    if (
-      error.response?.status === 401
-      // TODO 서버 에러 데이터 수정되면 주석 해제
-      // &&
-      // error.response?.data &&
-      // ['AT01', 'AT02', 'AT03'].includes(error.response.data.code)
-    ) {
-      // rnWebViewBridge.sendAction(ACTION_TYPE.LOGOUT);
+  async (error: AxiosError & { config: { retryCount: number } }) => {
+    if (error.response?.status !== 401) return Promise.reject(error);
+    // 401, accessToken 만료일때
+    const retryCount = error.config.retryCount || 1;
+    console.log(error.config);
+    if (retryCount >= 3) {
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
+
+    const token = localStorage.getItem('token') as string;
+    const { data } = await authAPI.refreshToken({
+      refreshToken: token,
+    });
+
+    localStorage.setItem('token', data.jwt);
+    error.config.retryCount = retryCount + 1;
+
+    setTimeout(() => {
+      return API.request(error.config);
+    }, RETRY_INTERVAL_TIME);
   },
 );
 
-interface Tokens {
-  accessToken: string;
-}
-export const setTokenInAxiosInstance = ({ accessToken }: Tokens) => {
+export const setTokenInAxiosInstance = () => {
   API.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+    const token = localStorage.getItem('token');
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   });
 };

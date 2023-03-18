@@ -2,8 +2,9 @@ import * as Type from '@/api/types/auth.types';
 import { ServiceFunc } from './types';
 
 type AuthService = {
-  login: ServiceFunc<Type.LoginCallbackParams>;
+  login: (params: Type.LoginParams) => Promise<void>;
 
+  refreshToken: ServiceFunc<Type.RefreshTokenParams>;
   // loginCallback: ServiceFunc<Type.LoginCallbackParams>;
 
   // withdraw: ServiceFunc;
