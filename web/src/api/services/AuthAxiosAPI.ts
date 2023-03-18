@@ -1,11 +1,20 @@
 import API from '@/api/core';
+import tokenAPI from '@/api/core/tokenAPI';
 
 import AuthService from './Auth.types';
 import * as Type from '@/api/types/auth.types';
 
 export default class AuthAxiosAPI implements AuthService {
-  login() {
-    return API.get(`/api/auth/local`);
+  async login(params: Type.LoginParams) {
+    const res = await API.post<Type.LoginResponse>(`/api/auth/local`, params);
+    return localStorage.setItem('token', res.data.jwt);
+  }
+
+  refreshToken(params: Type.RefreshTokenParams) {
+    return tokenAPI.post<Type.RefreshTokenResponse>(
+      `/api/token/refresh`,
+      params,
+    );
   }
 
   // loginCallback(params: Type.GoogleLoginCallbackParams) {

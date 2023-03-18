@@ -1,13 +1,30 @@
-export type LoginCallbackParams = {
-  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
-  user: {
-    id: 1;
-    username: 'foo.bar';
-    email: 'foo.bar@strapi.io';
-    provider: 'local';
-    confirmed: true;
-    blocked: false;
-    createdAt: '2022-06-02T08:32:06.258Z';
-    updatedAt: '2022-06-02T08:32:06.267Z';
-  };
+export type UserData = {
+  id: number;
+  username: string;
+  email: string;
+  provider: 'local' | '';
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  nickname: string;
+};
+
+export type LoginParams = {
+  identifier: string;
+  password: string;
+};
+
+export type LoginResponse = {
+  jwt: string;
+  user: UserData;
+};
+
+export type RefreshTokenParams = {
+  refreshToken: string;
+};
+
+export type RefreshTokenResponse = {
+  jwt: string;
+  refreshToken: string;
 };
