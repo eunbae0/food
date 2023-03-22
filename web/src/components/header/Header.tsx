@@ -2,22 +2,22 @@ import Image from 'next/image';
 import HeaderProps from './header.type';
 import styles from './Header.module.css';
 
-export const Header = ({ user }: HeaderProps) => (
-  <header>
-    <div className={styles.wrapper}>
-      <h1 className={styles.h1}>Food</h1>
-      <div className={styles.right}>
-        <Image src="/search.svg" width={48} height={48} alt={'search'} />
-        {user ? (
-          <Image src="/write.svg" width={48} height={48} alt={'search'} />
-        ) : (
-          <></>
-        )}
+import MainHeader from './Main';
+import AuthHeader from './Auth';
 
-        <Image src="/profile.svg" width={48} height={48} alt={'search'} />
-      </div>
-    </div>
-  </header>
+const returnHeader = (user: boolean, header?: string) => {
+  switch (header) {
+    case '':
+      return <MainHeader user={user} />;
+    case '/auth':
+      return <AuthHeader user={user} />;
+    default:
+      return <MainHeader user={user} />;
+  }
+};
+
+export const Header = ({ user, header }: HeaderProps) => (
+  <header>{returnHeader(user, header)}</header>
 );
 
 export default Header;
