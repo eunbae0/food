@@ -1,31 +1,52 @@
 .inputWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
   position: relative;
-
-  border-radius: 4px 4px 0px 0px;
+  background: #fffbfe;
 }
 
 .label {
   position: absolute;
-  top: -5px;
-  left: 10px;
+  top: -8px;
+  left: 12px;
 
-  background-color: #fff;
-  padding: 4px;
+  background: #fffbfe;
+  padding: 0 4px;
   z-index: 5;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.4px;
+
+  color: #49454f;
 }
 
 .input {
-  width: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  background: #fffbfe;
+
+  width: 100%;
   height: 56px;
   padding: 8px 0 8px 16px;
+  border: 1px solid #79747e;
+  border-radius: 4px;
   outline: none;
 
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: #1c1b1f;
+}
+
+.searchInput {
+  padding: 8px 0 8px 48px;
+}
+
+.searchImg {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
 }
