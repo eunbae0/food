@@ -2,21 +2,39 @@ import { authAPI } from '@/api';
 import Button from '@/components/button/Button';
 import Input from '@/components/input/Input';
 import styles from '@/styles/Auth.module.css';
-import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-
+import { useRef } from 'react';
 export default function AuthContainer() {
   const router = useRouter();
+
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
   const onSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    const username = usernameRef.current?.value as string;
+    const password = passwordRef.current?.value as string;
+    const isDev = process.env.NODE_ENV === 'development';
+
+    const devLoginObj = {
+      identifier: process.env.NEXT_PUBLIC_TEST_IDENTIFIER as string,
+      password: process.env.NEXT_PUBLIC_TEST_PASSWORD as string,
+    };
+
+    if (!username || !password) return alert('정보를 모두 입력해주세요');
     try {
-      await authAPI.login({
-        identifier: 'foobar',
-        password: 'Test1234',
-      });
+      const res = await authAPI.login(
+        isDev
+          ? devLoginObj
+          : {
+              identifier: username,
+              password,
+            },
+      );
+      await authAPI.refreshToken({ refreshToken: res.data.jwt });
       router.push('/');
     } catch (error: any) {
-      console.error(error.response.status);
+      console.error(error.response.status); //status 말고 그냥 출력
     }
   };
 
@@ -30,12 +48,14 @@ export default function AuthContainer() {
             isSearch={false}
             label="Username"
             type="text"
+            ref={usernameRef}
           ></Input>
           <Input
             primary={false}
             isSearch={false}
             label="Password"
             type="password"
+            ref={passwordRef}
           ></Input>
           <Button primary={false} label={'login'} type="submit" />
         </form>
@@ -47,3 +67,7 @@ export default function AuthContainer() {
     </>
   );
 }
+
+AuthContainer.getInitialProps = async () => {
+  return { isLogin: true };
+};

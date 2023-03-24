@@ -22,7 +22,6 @@ API.interceptors.response.use(
     if (retryCount >= 3) {
       return Promise.reject(error);
     }
-
     const token = localStorage.getItem('token') as string;
     const { data } = await authAPI.refreshToken({
       refreshToken: token,

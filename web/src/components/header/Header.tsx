@@ -1,23 +1,28 @@
-import Image from 'next/image';
+import { useSelector } from 'react-redux';
+import { userState } from '@/modules/user';
+
 import HeaderProps from './header.type';
-import styles from './Header.module.css';
 
 import MainHeader from './Main';
 import AuthHeader from './Auth';
 
-const returnHeader = (user: boolean, header?: string) => {
+const returnHeader = (header?: string) => {
   switch (header) {
     case '':
-      return <MainHeader user={user} />;
+      return <MainHeader />;
     case '/auth':
-      return <AuthHeader user={user} />;
+      return <AuthHeader />;
     default:
-      return <MainHeader user={user} />;
+      return <MainHeader />;
   }
 };
 
-export const Header = ({ user, header }: HeaderProps) => (
-  <header>{returnHeader(user, header)}</header>
-);
+export const Header = ({ header }: HeaderProps) => {
+  const { isLoading } = useSelector((state: userState) => ({
+    isLoading: state.isLoading,
+  }));
+  //isloading 로직 추가 필요
+  return <header>{returnHeader(header)}</header>;
+};
 
 export default Header;

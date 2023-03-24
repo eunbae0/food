@@ -1,5 +1,4 @@
 type HeaderProps = {
-  user: boolean;
   header?: string;
 };
 
