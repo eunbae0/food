@@ -1,11 +1,32 @@
 import '@/styles/globals.css';
 import 'reset-css';
 import type { AppProps } from 'next/app';
+import Header from '@/components/header/Header';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
 
-export default function App({ Component, pageProps }: AppProps) {
+import { createStore } from 'redux';
+import { wrapper } from '@/modules/user';
+import { Provider } from 'react-redux';
+import { SWRConfig } from 'swr';
+
+export default function App({ Component, ...rest }: AppProps) {
+  const router = useRouter();
+  const { store, props } = wrapper.useWrappedStore(rest);
   return (
-    <div className="global">
-      <Component {...pageProps} />
-    </div>
+    <SWRConfig value={{ shouldRetryOnError: false }}>
+      <Provider store={store}>
+        <Head>
+          <title>Food</title>
+          <meta name="description" content="food share" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          {/* <link rel="icon" href="/favicon.ico" /> */}
+        </Head>
+        <div className="global">
+          <Header header={router.pathname} />
+          <Component {...props.pageProps} />
+        </div>
+      </Provider>
+    </SWRConfig>
   );
 }

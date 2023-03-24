@@ -13,14 +13,15 @@ const API = axios.create({
 API.interceptors.response.use(
   (response) => response,
   async (error: AxiosError & { config: { retryCount: number } }) => {
-    if (error.response?.status !== 401) return Promise.reject(error);
+    const Localtoken = localStorage.getItem('token');
+    // 401 이외이거나, token이 localstorage에 없을 때
+    if (error.response?.status !== 401 || Localtoken === 'undefined')
+      return Promise.reject(error);
     // 401, accessToken 만료일때
     const retryCount = error.config.retryCount || 1;
-    console.log(error.config);
     if (retryCount >= 3) {
       return Promise.reject(error);
     }
-
     const token = localStorage.getItem('token') as string;
     const { data } = await authAPI.refreshToken({
       refreshToken: token,
@@ -31,7 +32,7 @@ API.interceptors.response.use(
 
     setTimeout(() => {
       return API.request(error.config);
-    }, RETRY_INTERVAL_TIME);
+    }, RETRY_INTERVAL_TIME * (retryCount - 1));
   },
 );
 
