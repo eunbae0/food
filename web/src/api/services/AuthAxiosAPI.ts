@@ -7,7 +7,8 @@ import * as Type from '@/api/types/auth.types';
 export default class AuthAxiosAPI implements AuthService {
   async login(params: Type.LoginParams) {
     const res = await API.post<Type.LoginResponse>(`/api/auth/local`, params);
-    return localStorage.setItem('token', res.data.jwt);
+    localStorage.setItem('token', res.data.jwt);
+    return res;
   }
 
   refreshToken(params: Type.RefreshTokenParams) {
@@ -15,6 +16,10 @@ export default class AuthAxiosAPI implements AuthService {
       `/api/token/refresh`,
       params,
     );
+  }
+
+  user() {
+    return API.get<Type.UserData>('/api/users/me');
   }
 
   // loginCallback(params: Type.GoogleLoginCallbackParams) {
