@@ -1,11 +1,19 @@
 import { authAPI } from '@/api';
 import Button from '@/components/button/Button';
 import Input from '@/components/input/Input';
+import { userState } from '@/modules/user';
 import styles from '@/styles/Auth.module.css';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
+import { useSelector } from 'react-redux';
 export default function AuthContainer() {
   const router = useRouter();
+
+  const { isLogin } = useSelector((state: userState) => ({
+    isLogin: state.isLogin,
+  }));
+
+  if (isLogin) router.push('/');
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
