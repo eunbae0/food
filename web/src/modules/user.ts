@@ -47,7 +47,7 @@ export default function user(
     case LOADING:
       return { ...state, isLoading: action.isLoading };
     case UPDATE:
-      return { ...state, user: action.user, isLogin: true };
+      return { ...state, user: action.user, isLoading: false, isLogin: true };
     case DELETE:
       return { ...state, ...initialUser, isLoading: false };
     default:
