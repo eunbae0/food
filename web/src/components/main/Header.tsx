@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 
 import styles from './MainHeader.module.css';
-import { userState } from '@/modules/user';
+import { deleteUser, userState } from '@/modules/user';
 import Modal from '@/components/common/modal/Modal';
 import { authAPI } from '@/api';
 import tokenAPI from '@/api/core/tokenAPI';
 
 import Header from '@/components/common/header';
+import Button from '@/components/common/button/Button';
 
 const MainHeader = () => {
   const { isLogin, user } = useSelector((state: userState) => ({
@@ -17,6 +18,7 @@ const MainHeader = () => {
   }));
   const [isModalOpen, setIsModalOpen] = useState(true);
 
+  const dispatch = useDispatch();
   const onClickMypage = () => {};
   const onClickLogout = () => {
     localStorage.removeItem('token');
@@ -26,26 +28,34 @@ const MainHeader = () => {
       return config;
     });
     //redux 상태제거
+    dispatch(deleteUser());
     authAPI.refreshToken({ refreshToken: '' });
+    alert('로그아웃 되었습니다');
   };
   return (
     <Header>
       <h1 className={styles.h1}>Food</h1>
       <div className={styles.right}>
-        <Image src="/search.svg" width={48} height={48} alt={'search'} />
+        <Button primary={false}>
+          <Image src="/search.svg" width={48} height={48} alt={'search'} />
+        </Button>
         {isLogin ? (
-          <Image src="/write.svg" width={48} height={48} alt={'search'} />
+          <Button primary={false}>
+            <Image src="/write.svg" width={48} height={48} alt={'search'} />
+          </Button>
         ) : (
           <></>
         )}
 
-        <Image
-          src="/profile.svg"
-          width={48}
-          height={48}
-          alt={'search'}
-          onClick={() => setIsModalOpen((prev) => !prev)}
-        />
+        <Button primary={false}>
+          <Image
+            src="/profile.svg"
+            width={48}
+            height={48}
+            alt={'search'}
+            onClick={() => setIsModalOpen((prev) => !prev)}
+          />
+        </Button>
         {isModalOpen && (
           <Modal
             type="header"
