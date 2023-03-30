@@ -46,6 +46,8 @@ export default function AuthContainer() {
 
       router.push('/');
     } catch (error: any) {
+      if (error.response.status === 400)
+        alert('회원 정보가 일치하지 않습니다.');
       console.error(error.response); //status 말고 그냥 출력
     }
   };
