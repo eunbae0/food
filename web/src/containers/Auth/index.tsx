@@ -2,11 +2,11 @@ import { authAPI } from '@/api';
 import Header from '@/components/auth/Header';
 import Button from '@/components/common/button/Button';
 import Input from '@/components/common/input/Input';
-import { userState } from '@/modules/user';
+import { updateUser, userState } from '@/modules/user';
 import styles from '@/styles/Auth.module.css';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 export default function AuthContainer() {
   const router = useRouter();
 
@@ -18,6 +18,7 @@ export default function AuthContainer() {
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
 
   const onSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,10 +41,12 @@ export default function AuthContainer() {
               password,
             },
       );
-      await authAPI.refreshToken({ refreshToken: res.data.jwt });
+      // await authAPI.refreshToken({ refreshToken: res.data.jwt });
+      dispatch(updateUser(res.data.user));
+
       router.push('/');
     } catch (error: any) {
-      console.error(error.response.status); //status 말고 그냥 출력
+      console.error(error.response); //status 말고 그냥 출력
     }
   };
 
