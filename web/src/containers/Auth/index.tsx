@@ -55,8 +55,14 @@ export default function AuthContainer() {
 
       router.push('/');
     } catch (error: any) {
-      if (error.response.status === 400)
-        alert('회원 정보가 일치하지 않습니다.');
+      if (error.response.status === 400) {
+        Notiflix.Notify.failure('회원정보가 없거나 일치하지 않습니다');
+        return;
+      }
+      if (error.response.status === 429) {
+        Notiflix.Notify.failure('요청이 많습니다! 잠시후 다시 시도해주세요');
+        return;
+      }
       console.error(error.response); //status 말고 그냥 출력
     }
   };
