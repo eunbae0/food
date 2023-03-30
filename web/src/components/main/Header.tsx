@@ -10,6 +10,8 @@ import tokenAPI from '@/api/core/tokenAPI';
 
 import Header from '@/components/common/header';
 import Button from '@/components/common/button/Button';
+import Notiflix from 'notiflix';
+import { useRouter } from 'next/router';
 
 const MainHeader = () => {
   const { isLogin, user } = useSelector((state: userState) => ({
@@ -19,18 +21,23 @@ const MainHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const dispatch = useDispatch();
+  const router = useRouter();
   const onClickMypage = () => {};
-  const onClickLogout = () => {
+  const onClickLogout = async () => {
     localStorage.removeItem('token');
     tokenAPI.interceptors.request.use((config) => {
       config.withCredentials = false;
       // config.headers.clear;
       return config;
     });
-    //redux 상태제거
-    dispatch(deleteUser());
-    authAPI.refreshToken({ refreshToken: '' });
-    alert('로그아웃 되었습니다');
+    dispatch(deleteUser()); //redux 상태제거
+    try {
+      await authAPI.refreshToken({ refreshToken: '' });
+      Notiflix.Notify.success('로그아웃 되었습니다');
+      router.push('/');
+    } catch (error) {
+      Notiflix.Notify.failure('알수없는 문제가 발생했습니다');
+    }
   };
   return (
     <Header>
