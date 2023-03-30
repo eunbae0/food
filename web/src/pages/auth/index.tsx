@@ -1,9 +1,8 @@
 import AuthContainer from '@/containers/Auth';
+import { withUser } from '@/hoc/withUser';
 
-export default function Auth() {
-  return (
-    <>
-      <AuthContainer />
-    </>
-  );
+function Auth() {
+  return <AuthContainer />;
 }
+
+export default withUser(Auth);

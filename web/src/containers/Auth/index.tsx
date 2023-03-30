@@ -1,14 +1,24 @@
 import { authAPI } from '@/api';
-import Button from '@/components/button/Button';
-import Input from '@/components/input/Input';
+import Header from '@/components/auth/Header';
+import Button from '@/components/common/button/Button';
+import Input from '@/components/common/input/Input';
+import { updateUser, userState } from '@/modules/user';
 import styles from '@/styles/Auth.module.css';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 export default function AuthContainer() {
   const router = useRouter();
 
+  const { isLogin } = useSelector((state: userState) => ({
+    isLogin: state.isLogin,
+  }));
+
+  if (isLogin) router.push('/');
+
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
 
   const onSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,15 +41,20 @@ export default function AuthContainer() {
               password,
             },
       );
-      await authAPI.refreshToken({ refreshToken: res.data.jwt });
+      // await authAPI.refreshToken({ refreshToken: res.data.jwt });
+      dispatch(updateUser(res.data.user));
+
       router.push('/');
     } catch (error: any) {
-      console.error(error.response.status); //status 말고 그냥 출력
+      if (error.response.status === 400)
+        alert('회원 정보가 일치하지 않습니다.');
+      console.error(error.response); //status 말고 그냥 출력
     }
   };
 
   return (
     <>
+      <Header />
       <section className={styles.loginFormWrapper}>
         <h1 className={styles.h1}>로그인하여 다양한 요리 정보를 검색하세요!</h1>
         <form onSubmit={onSubmitLogin} className={styles.form}>
