@@ -145,9 +145,19 @@ module.exports = (plugin) => {
     const { refreshToken } = ctx.request.body;
     let refreshCookie = ctx.cookies.get("refreshToken");
 
-    if (!refreshCookie && !refreshToken) {
+    if (!refreshToken) {
+      ctx.cookies.set("refreshToken", "", {
+        httpOnly: true,
+        secure: false,
+        signed: true,
+        overwrite: true,
+        expires: new Date().now,
+      });
       return ctx.badRequest("No Authorization");
     }
+    // if (!refreshCookie && !refreshToken) {
+    //   return ctx.badRequest("No Authorization");
+    // }
     if (!refreshCookie) {
       if (refreshToken) {
         refreshCookie = refreshToken;
