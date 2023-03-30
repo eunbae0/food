@@ -1,12 +1,18 @@
+import { useRef } from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { updateUser, userState } from '@/modules/user';
 import { authAPI } from '@/api';
+
 import Header from '@/components/auth/Header';
 import Button from '@/components/common/button/Button';
 import Input from '@/components/common/input/Input';
-import { updateUser, userState } from '@/modules/user';
+
 import styles from '@/styles/Auth.module.css';
-import { useRouter } from 'next/router';
-import { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
+import Notiflix from 'notiflix';
+
 export default function AuthContainer() {
   const router = useRouter();
 
@@ -31,7 +37,10 @@ export default function AuthContainer() {
       password: process.env.NEXT_PUBLIC_TEST_PASSWORD as string,
     };
 
-    if (!username || !password) return alert('정보를 모두 입력해주세요');
+    if (!username || !password) {
+      Notiflix.Notify.failure('정보를 모두 입력해주세요!');
+      return;
+    }
     try {
       const res = await authAPI.login(
         isDev
