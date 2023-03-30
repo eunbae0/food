@@ -1,8 +1,6 @@
 import '@/styles/globals.css';
 import 'reset-css';
 import type { AppProps } from 'next/app';
-import Header from '@/components/header/Header';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import { createStore } from 'redux';
@@ -11,7 +9,6 @@ import { Provider } from 'react-redux';
 import { SWRConfig } from 'swr';
 
 export default function App({ Component, ...rest }: AppProps) {
-  const router = useRouter();
   const { store, props } = wrapper.useWrappedStore(rest);
   return (
     <SWRConfig value={{ shouldRetryOnError: false }}>
@@ -23,7 +20,6 @@ export default function App({ Component, ...rest }: AppProps) {
           {/* <link rel="icon" href="/favicon.ico" /> */}
         </Head>
         <div className="global">
-          <Header header={router.pathname} />
           <Component {...props.pageProps} />
         </div>
       </Provider>

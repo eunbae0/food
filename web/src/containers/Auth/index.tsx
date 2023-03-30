@@ -1,6 +1,7 @@
 import { authAPI } from '@/api';
-import Button from '@/components/button/Button';
-import Input from '@/components/input/Input';
+import Header from '@/components/auth/Header';
+import Button from '@/components/common/button/Button';
+import Input from '@/components/common/input/Input';
 import { userState } from '@/modules/user';
 import styles from '@/styles/Auth.module.css';
 import { useRouter } from 'next/router';
@@ -48,6 +49,7 @@ export default function AuthContainer() {
 
   return (
     <>
+      <Header />
       <section className={styles.loginFormWrapper}>
         <h1 className={styles.h1}>로그인하여 다양한 요리 정보를 검색하세요!</h1>
         <form onSubmit={onSubmitLogin} className={styles.form}>
