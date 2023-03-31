@@ -1,8 +1,11 @@
-import Header from '@/components/main/Header';
-import Card from '@/components/common/card/Card';
-import styles from '@/styles/Main.module.css';
-import { useSelector } from 'react-redux';
 import { userState } from '@/modules/user';
+import { useSelector } from 'react-redux';
+
+import Header from '@/components/main/Header';
+import Banner from '@/components/common/banner/Banner';
+import Card from '@/components/common/card/Card';
+
+import styles from '@/styles/Main.module.css';
 
 export default function MainContainer() {
   const { isLogin, isLoading, user } = useSelector((state: userState) => ({
@@ -13,7 +16,7 @@ export default function MainContainer() {
   return (
     <main>
       <Header />
-      <section className={styles.bannerWrapper}></section>
+      <Banner />
       <section className={styles.cardWrapper}>
         <Card card={'asdf'} />
         <Card card={'asdf'} />
