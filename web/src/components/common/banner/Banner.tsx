@@ -1,6 +1,7 @@
 import styles from './Banner.module.css';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+
+import useBanner from '@/hooks/useBanner';
 
 const imgArr = [
   'banner_sample1',
@@ -10,28 +11,8 @@ const imgArr = [
 ];
 
 export const Banner = () => {
-  const [currentBanner, setCurrentBanner] = useState(0);
   const MAX_SIZE = imgArr.length - 1;
-  const SCROLL_INTERVAL_TIME = 4000;
-
-  const onClickBefore = () => {
-    if (currentBanner === 0) setCurrentBanner(MAX_SIZE);
-    else setCurrentBanner((prev) => prev - 1);
-  };
-  const onClickNext = () => {
-    if (currentBanner === MAX_SIZE) setCurrentBanner(0);
-    else setCurrentBanner((prev) => prev + 1);
-  };
-
-  useEffect(() => {
-    const InfinityScroll = () => {
-      if (currentBanner >= MAX_SIZE) setCurrentBanner(0);
-      else setCurrentBanner((prev) => prev + 1);
-    };
-    setTimeout(InfinityScroll, SCROLL_INTERVAL_TIME);
-    return clearTimeout(currentBanner);
-  }, [MAX_SIZE, currentBanner]);
-
+  const { currentBanner, onClickBefore, onClickNext } = useBanner(MAX_SIZE);
   return (
     <section className={styles.section}>
       <ul
