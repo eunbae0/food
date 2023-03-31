@@ -2,7 +2,8 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateUser, userState } from '@/modules/user';
+import { updateUser } from '@/modules/user';
+import { indexState } from '@/modules';
 import { authAPI } from '@/api';
 
 import Header from '@/components/auth/Header';
@@ -16,8 +17,8 @@ import Notiflix from 'notiflix';
 export default function AuthContainer() {
   const router = useRouter();
 
-  const { isLogin } = useSelector((state: userState) => ({
-    isLogin: state.isLogin,
+  const { isLogin } = useSelector((state: indexState) => ({
+    isLogin: state.userData.isLogin,
   }));
 
   if (isLogin) router.push('/');

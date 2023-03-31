@@ -1,7 +1,7 @@
 import { authAPI } from '@/api';
 import { setTokenInAxiosInstance } from '@/api/core';
 import { deleteUser, loadingUser, updateUser } from '@/modules/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
 export default function useUser() {

@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
 import { createStore } from 'redux';
-import { wrapper } from '@/modules/user';
+import { wrapper } from '@/modules';
 import { Provider } from 'react-redux';
 import { SWRConfig } from 'swr';
 

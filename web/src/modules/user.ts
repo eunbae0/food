@@ -54,11 +54,3 @@ export default function user(
       return state;
   }
 }
-
-// create a makeStore function
-const makeStore = (context: Context) => createStore(user);
-
-// export an assembled wrapper
-export const wrapper = createWrapper<Store<userState>>(makeStore, {
-  debug: true,
-});
