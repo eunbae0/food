@@ -1,4 +1,4 @@
-type ListItems = { text: string; onClick: () => void };
+type ListItems = { label: string; onClick: () => void };
 
 type ModalProps = {
   // primary: boolean;
@@ -7,6 +7,7 @@ type ModalProps = {
   // placeholder?: string;
   list: ListItems[];
   type?: 'header' | 'more' | '';
+  // modalOutSideClick?: (e: React.MouseEvent) => void;
 };
 
 export default ModalProps;
