@@ -61,7 +61,13 @@ const MainHeader = () => {
         </Button>
         {isLogin ? (
           <Button primary={false}>
-            <Image src="/write.svg" width={48} height={48} alt={'search'} />
+            <Image
+              src="/write.svg"
+              width={48}
+              height={48}
+              alt={'search'}
+              onClick={() => router.push('/write')}
+            />
           </Button>
         ) : (
           <></>
