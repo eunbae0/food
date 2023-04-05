@@ -1,0 +1,7 @@
+.cardWrapper {
+  width: 100%;
+  display: grid;
+  padding: 20px 0;
+  place-items: center;
+  gap: 20px;
+}
