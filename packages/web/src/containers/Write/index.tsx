@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,11 +16,13 @@ export default function WriteContainer() {
   const { isLogin } = useSelector((state: indexState) => ({
     isLogin: state.userData.isLogin,
   }));
-
-  if (!isLogin) {
-    Notiflix.Notify.failure('글쓰기를 하려면 로그인 해주세요!');
-    router.push('/');
-  }
+  useEffect(() => {
+    console.log(isLogin);
+    if (!isLogin) {
+      Notiflix.Notify.failure('글쓰기를 하려면 로그인 해주세요!');
+      // router.push('/');
+    }
+  }, [isLogin, router]);
 
   return (
     <>

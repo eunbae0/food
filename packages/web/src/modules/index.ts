@@ -5,6 +5,8 @@ import { combineReducers } from 'redux';
 import { createStore, AnyAction, Store } from 'redux';
 import { createWrapper, Context, HYDRATE } from 'next-redux-wrapper';
 
+import storage from 'redux-persist/lib/storage';
+import { persistStore, persistReducer } from 'redux-persist';
 import modal, { modalState } from './modal';
 import user, { userState } from './user';
 
@@ -35,6 +37,12 @@ import user, { userState } from './user';
 
 // export default rootReducer;
 
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['userData'],
+};
+
 export type indexState = {
   userData: userState;
   modalData: modalState;
@@ -45,8 +53,22 @@ const combinedReducer = combineReducers({
   modalData: modal,
 });
 
+export const persistedReducer = persistReducer(persistConfig, combinedReducer);
+
 // create a makeStore function
-const makeStore = (context: Context) => createStore(combinedReducer);
+// const makeStore = (context: Context) => createStore(combinedReducer);
+const makeStore = () => {
+  const isServer = typeof window === 'undefined';
+
+  if (isServer) {
+    return createStore(combinedReducer);
+  } else {
+    // we need it only on client side
+    const store = createStore(persistedReducer);
+    let persistor = persistStore(store);
+    return { persistor, ...store };
+  }
+};
 
 // export an assembled wrapper
 export const wrapper = createWrapper<Store<indexState>>(makeStore, {
