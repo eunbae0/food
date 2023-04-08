@@ -70,6 +70,8 @@ const makeStore = () => {
   }
 };
 
+export const persistor = persistStore(createStore(persistedReducer));
+
 // export an assembled wrapper
 export const wrapper = createWrapper<Store<indexState>>(makeStore, {
   // debug: true,
