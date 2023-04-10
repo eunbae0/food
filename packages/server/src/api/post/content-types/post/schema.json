@@ -43,6 +43,14 @@
     },
     "time": {
       "type": "datetime"
+    },
+    "desc": {
+      "type": "customField",
+      "options": {
+        "output": "HTML",
+        "preset": "standard"
+      },
+      "customField": "plugin::ckeditor.CKEditor"
     }
   }
 }

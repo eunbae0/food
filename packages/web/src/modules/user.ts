@@ -3,6 +3,8 @@ import { createWrapper, Context, HYDRATE } from 'next-redux-wrapper';
 
 import { UserData } from '@/api/types/auth.types';
 
+import { PURGE } from 'redux-persist';
+
 const UPDATE = 'user/UPDATE';
 const DELETE = 'user/DELETE';
 const LOADING = 'user/LOADING';
@@ -49,6 +51,8 @@ export default function user(
     case UPDATE:
       return { ...state, user: action.user, isLoading: false, isLogin: true };
     case DELETE:
+      return { ...state, ...initialUser, isLoading: false };
+    case PURGE:
       return { ...state, ...initialUser, isLoading: false };
     default:
       return state;
