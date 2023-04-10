@@ -13,7 +13,7 @@ export default function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
 
   return (
-    <SWRConfig value={{ shouldRetryOnError: false }}>
+    <SWRConfig value={{ shouldRetryOnError: false, keepPreviousData: false }}>
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
           <Head>

@@ -4,6 +4,7 @@
 import { combineReducers } from 'redux';
 import { createStore, AnyAction, Store } from 'redux';
 import { createWrapper, Context, HYDRATE } from 'next-redux-wrapper';
+import { devToolsEnhancer } from '@redux-devtools/extension';
 
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -46,6 +47,7 @@ const persistConfig = {
 export type indexState = {
   userData: userState;
   modalData: modalState;
+  _persist?: any;
 };
 
 const combinedReducer = combineReducers({
@@ -61,10 +63,13 @@ const makeStore = () => {
   const isServer = typeof window === 'undefined';
 
   if (isServer) {
-    return createStore(combinedReducer);
+    return createStore(combinedReducer, devToolsEnhancer({ trace: true }));
   } else {
     // we need it only on client side
-    const store = createStore(persistedReducer);
+    const store = createStore(
+      persistedReducer,
+      devToolsEnhancer({ trace: true }),
+    );
     let persistor = persistStore(store);
     return { persistor, ...store };
   }
