@@ -1,10 +1,11 @@
 import { authAPI } from '@/api';
 import { setTokenInAxiosInstance } from '@/api/core';
+import { persistor } from '@/modules';
 import { deleteUser, loadingUser, updateUser } from '@/modules/user';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
-export default function useUser() {
+export default async function useUser() {
   const dispatch = useDispatch();
   setTokenInAxiosInstance();
   const { data, error, isLoading } = useSWR(`/api/users/me`, authAPI.user);
@@ -15,6 +16,7 @@ export default function useUser() {
 
   if (error && localStorage.getItem('token') === 'undefined') {
     dispatch(deleteUser());
+    await persistor.purge();
     console.error(error);
   } else if (error) console.error(error);
 
