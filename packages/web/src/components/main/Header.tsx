@@ -12,7 +12,8 @@ import Header from '@/components/common/header';
 import Button from '@/components/common/button/Button';
 import Notiflix from 'notiflix';
 import { useRouter } from 'next/router';
-import { indexState } from '@/modules';
+import { indexState, persistor } from '@/modules';
+import { useSWRConfig } from 'swr';
 
 const MainHeader = () => {
   const { isLogin, user } = useSelector((state: indexState) => ({
@@ -33,6 +34,7 @@ const MainHeader = () => {
 
   const onClickMypage = () => {};
 
+  const { cache } = useSWRConfig();
   const onClickLogout = async () => {
     localStorage.removeItem('token');
     tokenAPI.interceptors.request.use((config) => {
@@ -42,6 +44,8 @@ const MainHeader = () => {
     });
     try {
       await authAPI.refreshToken({ refreshToken: '' });
+      await persistor.purge();
+      cache.delete('/api/users/me');
       dispatch(deleteUser()); //redux 상태제거
       Notiflix.Notify.success('로그아웃 되었습니다');
       setIsModalOpen(false);

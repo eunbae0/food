@@ -21,6 +21,7 @@ function WriteHeader() {
           onClick={onClickBackBtn}
         />
       </Button>
+      <h1 className={styles.headerName}>Write</h1>
     </Header>
   );
 }

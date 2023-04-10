@@ -99,6 +99,6 @@ export default function AuthContainer() {
   );
 }
 
-AuthContainer.getInitialProps = async () => {
-  return { isLogin: true };
-};
+// AuthContainer.getInitialProps = async () => {
+//   return { isLogin: true };
+// };
