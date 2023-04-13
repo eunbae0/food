@@ -14,11 +14,10 @@ import Button from '@/components/common/button/Button';
 
 import 'react-quill/dist/quill.snow.css';
 import { quillFormats } from '@/constants/quill';
-// import { quillModules, quillFormats } from '@constants/quill';
 
 export default function WriteContainer() {
   const router = useRouter();
-  const ReactQuill = dynamic(import('react-quill'), {
+  const ReactQuill = dynamic(() => import('react-quill'), {
     ssr: false,
     loading: () => <p>Loading ...</p>,
   });
@@ -42,9 +41,7 @@ export default function WriteContainer() {
   const [desc, setDesc] = useState('');
   const imageHandler = () => {};
 
-  const onChangeQuill = (e: string) => {
-    setDesc(e);
-  };
+  const onChangeQuill = (e, a, b, c) => {};
 
   const quillModules = useMemo(
     () => ({
@@ -74,8 +71,8 @@ export default function WriteContainer() {
   const onSubmitWrite = (e: React.FormEvent) => {
     e.preventDefault();
     const title = titleRef.current?.value as string;
+    console.log(desc);
   };
-
   return (
     <>
       <Header />
@@ -84,12 +81,14 @@ export default function WriteContainer() {
           <input ref={titleRef} className={styles.title} placeholder="제목" />
           <ReactQuill
             theme="snow"
+            onBlur={(e, a, b) => setDesc(b.getHTML())}
             onChange={onChangeQuill}
             modules={quillModules}
             formats={quillFormats}
             className={styles.quill}
             placeholder="내용"
             value={desc}
+            bounds={'hi'}
           >
             <div className={styles.editingArea} />
           </ReactQuill>

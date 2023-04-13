@@ -22,8 +22,8 @@ export default class AuthAxiosAPI implements AuthService {
     );
   }
 
-  user() {
-    return API.get<Type.UserData>('/api/users/me');
+  user(url: string) {
+    return API.get<Type.UserData>(url);
   }
 
   // loginCallback(params: Type.GoogleLoginCallbackParams) {
