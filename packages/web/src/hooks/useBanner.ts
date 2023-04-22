@@ -19,8 +19,8 @@ export default function useBanner(MAX_SIZE: number) {
       else setCurrentBanner((prev) => prev + 1);
     };
 
-    const timeout = setTimeout(InfinityScroll, SCROLL_INTERVAL_TIME);
-    return () => clearTimeout(timeout);
+    const timer = setTimeout(InfinityScroll, SCROLL_INTERVAL_TIME);
+    return () => clearTimeout(timer);
   }, [MAX_SIZE, currentBanner]);
 
   return { currentBanner, onClickBefore, onClickNext };
