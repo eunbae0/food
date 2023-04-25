@@ -15,6 +15,8 @@ import Button from '@/components/common/button/Button';
 import 'react-quill/dist/quill.snow.css';
 import { quillFormats } from '@/constants/quill';
 
+import { postAPI } from '@/api';
+
 export default function WriteContainer() {
   const router = useRouter();
   const ReactQuill = dynamic(() => import('react-quill'), {
@@ -70,8 +72,10 @@ export default function WriteContainer() {
   //onSubmit
   const onSubmitWrite = (e: React.FormEvent) => {
     e.preventDefault();
+    // titleRef.current?.focus();
     const title = titleRef.current?.value as string;
-    console.log(desc);
+    // await postAPI.post()
+    // console.log(desc);
   };
   return (
     <>
