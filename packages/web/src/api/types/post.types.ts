@@ -1,16 +1,16 @@
 export type PostParams = {
   data: {
     title: string;
-    description: string;
     liked: number;
-    thumbNail: string;
-    user: string;
+    thumbNail?: string;
+    userId: number;
     time: string;
     desc: string;
   };
 };
 export type PostResponse = {
   data: {
+    id: number;
     attributes: {
       title: string;
       description: string;

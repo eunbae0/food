@@ -70,11 +70,32 @@ export default function WriteContainer() {
     [],
   );
   //onSubmit
-  const onSubmitWrite = (e: React.FormEvent) => {
+  const { id } = useSelector((state: indexState) => ({
+    id: state.userData.user.id,
+  }));
+
+  const onSubmitWrite = async (e: React.FormEvent) => {
     e.preventDefault();
     // titleRef.current?.focus();
     const title = titleRef.current?.value as string;
-    // await postAPI.post()
+
+    try {
+      const res = await postAPI.post({
+        data: {
+          title,
+          desc,
+          liked: 0,
+          userId: id,
+          time: Date.now().toString(),
+        },
+      });
+      const postId = res.data.data.id;
+      Notiflix.Notify.success('성공적으로 작성되었습니다!');
+      router.push(`/post/${postId}`);
+    } catch (error) {
+      console.log(error);
+    }
+
     // console.log(desc);
   };
   return (
