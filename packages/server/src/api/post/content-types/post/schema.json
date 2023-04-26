@@ -17,9 +17,6 @@
       "type": "string",
       "required": true
     },
-    "description": {
-      "type": "text"
-    },
     "liked": {
       "type": "integer",
       "default": 0
@@ -35,12 +32,6 @@
         "audios"
       ]
     },
-    "user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "posts"
-    },
     "time": {
       "type": "datetime"
     },
@@ -51,6 +42,9 @@
         "preset": "standard"
       },
       "customField": "plugin::ckeditor.CKEditor"
+    },
+    "userId": {
+      "type": "integer"
     }
   }
 }
