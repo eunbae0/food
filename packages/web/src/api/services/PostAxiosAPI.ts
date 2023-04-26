@@ -9,4 +9,10 @@ export default class PostAxiosAPI implements PostService {
   post(params: Type.PostParams) {
     return tokenAPI.post<Type.PostResponse>(`/api/posts`, params);
   }
+  getPosts() {
+    return tokenAPI.get<Type.getPostsResponse>(`/api/posts`);
+  }
+  getPost(params: Type.getPostParams) {
+    return tokenAPI.get<Type.getPostResponse>(`/api/posts/${params.id}`);
+  }
 }
