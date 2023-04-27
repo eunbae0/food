@@ -26,6 +26,8 @@ export type PostData = {
   };
 };
 
+export type PostDataArray = Array<PostData>;
+
 export type PostPostData = {
   title: string;
   liked: number;
@@ -39,10 +41,8 @@ export type PostParams = BaseTypeWithData<PostPostData>;
 
 export type PostResponse = BaseTypeWithData<PostData>;
 
-export type getPostParams = {
-  id: number;
-};
+export type getPostParams = number;
 
-export type getPostsResponse = Array<PostData>;
+export type getPostsResponse = BaseTypeWithData<PostDataArray>;
 
 export type getPostResponse = BaseTypeWithData<PostData>;
