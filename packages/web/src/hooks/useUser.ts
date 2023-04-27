@@ -8,7 +8,10 @@ import useSWR from 'swr';
 export default async function useUser() {
   const dispatch = useDispatch();
   setTokenInAxiosInstance();
-  const { data, error, isLoading } = useSWR(`/api/users/me`, authAPI.user);
+  const { data, error, isLoading } = useSWR(
+    typeof window === 'undefined' ? null : `/api/users/me`,
+    authAPI.user,
+  );
   dispatch(loadingUser(isLoading));
   if (data) {
     dispatch(updateUser(data.data));

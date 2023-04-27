@@ -14,11 +14,12 @@ import Button from '@/components/common/button/Button';
 
 import 'react-quill/dist/quill.snow.css';
 import { quillFormats } from '@/constants/quill';
-// import { quillModules, quillFormats } from '@constants/quill';
+
+import { postAPI } from '@/api';
 
 export default function WriteContainer() {
   const router = useRouter();
-  const ReactQuill = dynamic(import('react-quill'), {
+  const ReactQuill = dynamic(() => import('react-quill'), {
     ssr: false,
     loading: () => <p>Loading ...</p>,
   });
@@ -42,9 +43,7 @@ export default function WriteContainer() {
   const [desc, setDesc] = useState('');
   const imageHandler = () => {};
 
-  const onChangeQuill = (e: string) => {
-    setDesc(e);
-  };
+  const onChangeQuill = (e, a, b, c) => {};
 
   const quillModules = useMemo(
     () => ({
@@ -71,11 +70,34 @@ export default function WriteContainer() {
     [],
   );
   //onSubmit
-  const onSubmitWrite = (e: React.FormEvent) => {
-    e.preventDefault();
-    const title = titleRef.current?.value as string;
-  };
+  const { id } = useSelector((state: indexState) => ({
+    id: state.userData.user.id,
+  }));
 
+  const onSubmitWrite = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // titleRef.current?.focus();
+    const title = titleRef.current?.value as string;
+
+    try {
+      const res = await postAPI.post({
+        data: {
+          title,
+          desc,
+          liked: 0,
+          userId: id,
+          time: Date.now().toString(),
+        },
+      });
+      const postId = res.data.data.id;
+      Notiflix.Notify.success('성공적으로 작성되었습니다!');
+      router.push(`/post/${postId}`);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // console.log(desc);
+  };
   return (
     <>
       <Header />
@@ -84,12 +106,14 @@ export default function WriteContainer() {
           <input ref={titleRef} className={styles.title} placeholder="제목" />
           <ReactQuill
             theme="snow"
+            onBlur={(e, a, b) => setDesc(b.getHTML())}
             onChange={onChangeQuill}
             modules={quillModules}
             formats={quillFormats}
             className={styles.quill}
             placeholder="내용"
             value={desc}
+            bounds={'hi'}
           >
             <div className={styles.editingArea} />
           </ReactQuill>

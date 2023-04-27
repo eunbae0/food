@@ -1,4 +1,6 @@
+import { PostData } from '@/api/types/post.types';
+
 type CardProps = {
-  card: string;
+  data: PostData;
 };
 export default CardProps;
