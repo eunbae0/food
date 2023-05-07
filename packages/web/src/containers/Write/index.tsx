@@ -43,7 +43,7 @@ export default function WriteContainer() {
   const [desc, setDesc] = useState('');
   const imageHandler = () => {};
 
-  const onChangeQuill = (e, a, b, c) => {};
+  // const onChangeQuill = (e, a, b, c) => {};
 
   const quillModules = useMemo(
     () => ({
@@ -107,7 +107,7 @@ export default function WriteContainer() {
           <ReactQuill
             theme="snow"
             onBlur={(e, a, b) => setDesc(b.getHTML())}
-            onChange={onChangeQuill}
+            // onChange={onChangeQuill}
             modules={quillModules}
             formats={quillFormats}
             className={styles.quill}
